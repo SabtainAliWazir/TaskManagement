@@ -19,9 +19,9 @@
     
 <div class="container mt-5">
     <h1 class="text-center mb-4">Task Management</h1>
-    <div class="row">
+    {{-- <div class="row"> --}}
     @yield('content')
-    </div>
+    {{-- </div> --}}
 </div>
 
 

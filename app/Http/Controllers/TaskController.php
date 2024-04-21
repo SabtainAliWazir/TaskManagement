@@ -49,4 +49,9 @@ class TaskController extends Controller
 
         return response()->json(['message' => 'Task priority updated successfully', 'task' => $task]);
     }
+    public function sortByPriority()
+    {
+        $tasks = Task::orderBy('priority', 'desc')->get();
+        return response()->json(['tasks' => $tasks]);
+    }
 }

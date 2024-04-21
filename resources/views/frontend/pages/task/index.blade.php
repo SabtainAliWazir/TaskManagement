@@ -4,10 +4,14 @@
 @section('content')
 
     <!-- Button to trigger modal -->
-    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#addTaskModal">
-        Create Task
-    </button>
-    
+  
+  
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#addTaskModal">
+            Create Task
+        </button>
+        <button type="button" id="sortByPriorityButton" class="btn btn-danger">Sort by Priority</button>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -191,6 +195,34 @@ $(document).on('change', '.priority-select', function() {
         }
     });
 });
+
+$(document).on('click','#sortByPriorityButton',function() {
+    console.log('hello');
+    $.ajax({
+        url: '/tasks/sort-by-priority',
+        type: 'GET',
+        success: function(response) {
+            // Update task list with sorted tasks
+            // Assuming the response is an array of tasks
+            var taskListHtml = '';
+            $.each(response.tasks, function(index, task) {
+                taskListHtml += '<tr>';
+                taskListHtml += '<td>' + task.title + '</td>';
+                taskListHtml += '<td>' + task.description + '</td>';
+                taskListHtml += '<td>' + task.priority + '</td>';
+                taskListHtml += '<td>' + task.due_date + '</td>';
+                taskListHtml += '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>';
+                taskListHtml += '</tr>';
+            });
+            $('#taskList').html(taskListHtml);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Handle error
+        }
+    });
+});
+
 
 </script>
 
