@@ -18,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-
-Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
+Route::get('/tasks', [TaskController::class, 'index']);
+Route::post('/tasks', [TaskController::class, 'store'])->name('task.store');
