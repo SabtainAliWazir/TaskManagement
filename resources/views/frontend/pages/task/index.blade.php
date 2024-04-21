@@ -68,10 +68,15 @@
             <tbody id="taskList">
                 <!-- Sample task row (replace with dynamic data) -->
                 @foreach($tasks as $task)
-                <tr id = {{ $task->id }}>
+                <tr class="task-row" id = {{ $task->id }}>
                     <td>{{ $task->title }}</td>
                     <td>{{ $task->description }}</td>
-                    <td>Low</td>
+                    <td>   
+                        <select class="priority-select" data-task-id="{{ $task->id }}">
+                        <option value="low" {{ $task->priority == 1 ? 'selected' : '' }}>Low</option>
+                        <option value="medium" {{ $task->priority == 2 ? 'selected' : '' }}>Medium</option>
+                        <option value="high" {{ $task->priority == 3 ? 'selected' : '' }}>High</option>
+                    </select></td>
                     <td>{{ $task->due_date }}</td>
                     <td>
                         {{ $task->completed ? 'completed' : 'incomplete' }}
@@ -81,7 +86,9 @@
                 <!-- Additional rows for more tasks -->
             </tbody>
         </table>
-        {{ $tasks->links() }}
+        <div class="pagination-container">
+            {{ $tasks->links() }}
+        </div>
     </div>
     
 
@@ -106,7 +113,7 @@
             data: $('#taskForm').serialize(),
             success: function(response) {
                 // Handle success response
-                $('#taskList').append(
+                $('#taskList').prepend(
                     '<tr id="taskRow' + response.task.id + '">' +
                         '<td>' + response.task.title + '</td>' +
                         '<td>' + response.task.description + '</td>' +
@@ -137,7 +144,32 @@
     });
 });
 
+$(document).on('change', '.priority-select', function() {
+    var selectElement = $(this);
+    var taskId = selectElement.data('task-id');
+    var priority =selectElement.val();
 
+    $.ajax({
+        url: '/tasks/' + taskId + '/update-priority',
+        type: 'POST',
+        data: { priority: priority,  _token: '{{ csrf_token() }}' },
+        success: function(response) {
+            // Update the task listing or indicate success
+            toastr.success(response.message);
+            var taskRow = selectElement.closest('.task-row'); // Find the closest task row
+            taskRow.addClass('updated-priority'); // Add class to the specific task row
+
+            // Remove the class after 2 seconds to remove the visual effect
+            setTimeout(function() {
+                taskRow.removeClass('updated-priority'); // Remove class from the specific task row
+            }, 2000);
+        },
+        error: function(error) {
+            console.error(error);
+            toastr.error('An error occurred while updating task priority.');
+        }
+    });
+});
 
 </script>
 

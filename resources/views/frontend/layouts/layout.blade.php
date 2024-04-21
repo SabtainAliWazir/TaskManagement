@@ -8,6 +8,12 @@
     <!-- Include Toastr CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
+<style>
+.updated-priority {
+    background-color: #ffff99; /* Light yellow background */
+    transition: background-color 0.5s ease; /* Smooth transition effect */
+}
+</style>
 </head>
 <body>
     
