@@ -25,11 +25,17 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" name="title" required>
+                          @error('title')
+                          <span class="text-danger">{{ $message }}</span>
+                         @enderror
                         </div>
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
+                            @error('description')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                         </div>
                         <div class="form-group">
                           <label for="priority">Priority</label>
                           <select class="form-control" id="priority" name="priority" required>
@@ -37,10 +43,16 @@
                             <option value="2">Medium</option>
                             <option value="3">High</option>
                           </select>
+                          @error('priority')
+                          <span class="text-danger">{{ $message }}</span>
+                          @enderror
                         </div>
                         <div class="form-group">
                           <label for="dueDate">Due Date</label>
                           <input type="date" class="form-control" id="dueDate" name="due_date" required>
+                          @error('due_date')
+                          <span class="text-danger">{{ $message }}</span>
+                          @enderror
                         </div>
                         {{-- <button type="submit" class="btn btn-primary">Create</button> --}}
                       </form>
@@ -135,10 +147,19 @@
                 
           
             },
-            error: function(error) {
+            error: function(xhr) {
                 // Handle error response
-                console.error(error);
-                toastr.error('An error occurred while creating the task.'); // Show error message
+                if (xhr.status == 422) {
+                    var errors = xhr.responseJSON.errors;
+
+                    // Display validation errors next to form fields
+                    $.each(errors, function(key, value) {
+                        $('#' + key).after('<span class="text-danger">' + value[0] + '</span>');
+                    });
+                } else {
+                    // Show generic error message
+                    toastr.error('An error occurred while creating the task.');
+                }
             }
         });
     });

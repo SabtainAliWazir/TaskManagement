@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class TaskController extends Controller
         return view('frontend.pages.task.index', compact('tasks'));
     }
 
-    function store(Request $request){
+    function store(TaskRequest $request){
         $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
