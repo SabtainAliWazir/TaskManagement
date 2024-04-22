@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    //
     function index(Request $request){
        
         $tasks = Task::latest()->paginate(5);
@@ -57,13 +56,10 @@ class TaskController extends Controller
             return view('frontend.pages.task.index', compact('tasks'));
         }
        
-            // Render the partial view containing the new data
-            $data = view('frontend.pages.task.tasktable', ['tasks' => $tasks])->render();
-            $pagination = view('frontend.pages.task.paginationlinks', ['tasks' => $tasks])->render();
+        // Render the partial view containing the new data
+        $data = view('frontend.pages.task.tasktable', ['tasks' => $tasks])->render();
+        $pagination = view('frontend.pages.task.paginationlinks', ['tasks' => $tasks])->render();
 
-
-
-        
-            return response()->json(['tasks' => $data, 'page' => $pagination]);
+        return response()->json(['tasks' => $data, 'page' => $pagination]);
     }
 }

@@ -5,7 +5,6 @@
 
     <!-- Button to trigger modal -->
   
-  
     <div class="d-flex justify-content-between">
         <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#addTaskModal">
             Create Task
@@ -58,7 +57,6 @@
                           <span class="text-danger">{{ $message }}</span>
                           @enderror
                         </div>
-                        {{-- <button type="submit" class="btn btn-primary">Create</button> --}}
                       </form>
                 </div>
                 <div class="modal-footer">
@@ -120,7 +118,7 @@
                         '<td>' + response.task.due_date + '</td>' +
                         '<td>' + (response.task.completed ? 'Completed' : 'Incomplete') + '</td>' +
                     '</tr>'
-        );
+                 );
                 $('#title').val('');
                 $('#description').val('');
                 $('#priority').val('low');
@@ -185,24 +183,6 @@ $(document).on('click','#sortByPriorityButton',function() {
         url: '/tasks/sort-by-priority',
         type: 'GET',
         success: function(response) {
-            // Update task list with sorted tasks
-            // Assuming the response is an array of tasks
-        //     var taskListHtml = '';
-        //     $.each(response.tasks, function(index, task) {
-        //     taskListHtml += '<tr class="task-row" id="' + task.id + '">' +
-        //         '<td>' + task.title + '</td>' +
-        //         '<td>' + task.description + '</td>' +
-        //         '<td>' +
-        //         '<select class="priority-select" data-task-id="' + task.id + '">' +
-        //         '<option value="low" ' + (task.priority == 1 ? 'selected' : '') + '>Low</option>' +
-        //         '<option value="medium" ' + (task.priority == 2 ? 'selected' : '') + '>Medium</option>' +
-        //         '<option value="high" ' + (task.priority == 3 ? 'selected' : '') + '>High</option>' +
-        //         '</select>' +
-        //         '</td>' +
-        //         '<td>' + task.due_date + '</td>' +
-        //         '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>' +
-        //         '</tr>';
-        // });
             let tasks = response.tasks;
             $('#taskList').html(tasks);
             $('.pagination-container').html(response.page);
@@ -210,7 +190,6 @@ $(document).on('click','#sortByPriorityButton',function() {
         },
         error: function(xhr, status, error) {
             console.error(error);
-            // Handle error
         }
     });
 });
