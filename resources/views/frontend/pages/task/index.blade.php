@@ -206,14 +206,21 @@ $(document).on('click','#sortByPriorityButton',function() {
             // Assuming the response is an array of tasks
             var taskListHtml = '';
             $.each(response.tasks, function(index, task) {
-                taskListHtml += '<tr>';
-                taskListHtml += '<td>' + task.title + '</td>';
-                taskListHtml += '<td>' + task.description + '</td>';
-                taskListHtml += '<td>' + task.priority + '</td>';
-                taskListHtml += '<td>' + task.due_date + '</td>';
-                taskListHtml += '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>';
-                taskListHtml += '</tr>';
-            });
+            taskListHtml += '<tr class="task-row" id="' + task.id + '">' +
+                '<td>' + task.title + '</td>' +
+                '<td>' + task.description + '</td>' +
+                '<td>' +
+                '<select class="priority-select" data-task-id="' + task.id + '">' +
+                '<option value="low" ' + (task.priority == 1 ? 'selected' : '') + '>Low</option>' +
+                '<option value="medium" ' + (task.priority == 2 ? 'selected' : '') + '>Medium</option>' +
+                '<option value="high" ' + (task.priority == 3 ? 'selected' : '') + '>High</option>' +
+                '</select>' +
+                '</td>' +
+                '<td>' + task.due_date + '</td>' +
+                '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>' +
+                '</tr>';
+        });
+            
             $('#taskList').html(taskListHtml);
         },
         error: function(xhr, status, error) {
