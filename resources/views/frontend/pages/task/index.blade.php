@@ -83,28 +83,11 @@
             </thead>
             <tbody id="taskList">
                 <!-- Sample task row (replace with dynamic data) -->
-                @foreach($tasks as $task)
-                <tr class="task-row" id = {{ $task->id }}>
-                    <td>{{ $task->title }}</td>
-                    <td>{{ $task->description }}</td>
-                    <td>   
-                        <select class="priority-select" data-task-id="{{ $task->id }}">
-                        <option value="low" {{ $task->priority == 1 ? 'selected' : '' }}>Low</option>
-                        <option value="medium" {{ $task->priority == 2 ? 'selected' : '' }}>Medium</option>
-                        <option value="high" {{ $task->priority == 3 ? 'selected' : '' }}>High</option>
-                    </select></td>
-                    <td>{{ $task->due_date }}</td>
-                    <td>
-                        {{ $task->completed ? 'completed' : 'incomplete' }}
-                    </td>
-                </tr>
-                @endforeach
+               @include('frontend.pages.task.tasktable')
                 <!-- Additional rows for more tasks -->
             </tbody>
         </table>
-        <div class="pagination-container">
-            {{ $tasks->links() }}
-        </div>
+        @include('frontend.pages.task.paginationlinks')
     </div>
     
 
@@ -204,24 +187,26 @@ $(document).on('click','#sortByPriorityButton',function() {
         success: function(response) {
             // Update task list with sorted tasks
             // Assuming the response is an array of tasks
-            var taskListHtml = '';
-            $.each(response.tasks, function(index, task) {
-            taskListHtml += '<tr class="task-row" id="' + task.id + '">' +
-                '<td>' + task.title + '</td>' +
-                '<td>' + task.description + '</td>' +
-                '<td>' +
-                '<select class="priority-select" data-task-id="' + task.id + '">' +
-                '<option value="low" ' + (task.priority == 1 ? 'selected' : '') + '>Low</option>' +
-                '<option value="medium" ' + (task.priority == 2 ? 'selected' : '') + '>Medium</option>' +
-                '<option value="high" ' + (task.priority == 3 ? 'selected' : '') + '>High</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' + task.due_date + '</td>' +
-                '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>' +
-                '</tr>';
-        });
-            
-            $('#taskList').html(taskListHtml);
+        //     var taskListHtml = '';
+        //     $.each(response.tasks, function(index, task) {
+        //     taskListHtml += '<tr class="task-row" id="' + task.id + '">' +
+        //         '<td>' + task.title + '</td>' +
+        //         '<td>' + task.description + '</td>' +
+        //         '<td>' +
+        //         '<select class="priority-select" data-task-id="' + task.id + '">' +
+        //         '<option value="low" ' + (task.priority == 1 ? 'selected' : '') + '>Low</option>' +
+        //         '<option value="medium" ' + (task.priority == 2 ? 'selected' : '') + '>Medium</option>' +
+        //         '<option value="high" ' + (task.priority == 3 ? 'selected' : '') + '>High</option>' +
+        //         '</select>' +
+        //         '</td>' +
+        //         '<td>' + task.due_date + '</td>' +
+        //         '<td>' + (task.completed ? 'Completed' : 'Incomplete') + '</td>' +
+        //         '</tr>';
+        // });
+            let tasks = response.tasks;
+            $('#taskList').html(tasks);
+            $('.pagination-container').html(response.page);
+
         },
         error: function(xhr, status, error) {
             console.error(error);
