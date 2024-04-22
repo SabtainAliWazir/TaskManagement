@@ -127,10 +127,6 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 toastr.success(response.message); 
-             
-                // Assuming you're using Toastr for notifications
-                
-          
             },
             error: function(xhr) {
                 // Handle error response
@@ -186,14 +182,12 @@ $(document).on('click','#sortByPriorityButton',function() {
             let tasks = response.tasks;
             $('#taskList').html(tasks);
             $('.pagination-container').html(response.page);
-
         },
         error: function(xhr, status, error) {
             console.error(error);
         }
     });
 });
-
 
 </script>
 
